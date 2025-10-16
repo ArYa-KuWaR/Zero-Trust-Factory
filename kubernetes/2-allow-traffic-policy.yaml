@@ -1,0 +1,26 @@
+# kubernetes/2-allow-traffic-policy.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-app-traffic
+spec:
+  podSelector: {} # Apply these rules to all pods
+  policyTypes:
+  - Ingress
+  ingress:
+    # --- Rule 1: Allow Robot to talk to Design DB ---
+    - from:
+      - podSelector:
+          matchLabels:
+            app: robot-controller
+      ports:
+      - protocol: TCP
+        port: 5003 # Port for Design DB
+    # --- Rule 2: Allow IoT Sensor to talk to Dashboard ---
+    - from:
+      - podSelector:
+          matchLabels:
+            app: iot-sensor
+      ports:
+      - protocol: TCP
+        port: 5005 # Port for Dashboard

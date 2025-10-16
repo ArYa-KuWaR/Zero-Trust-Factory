@@ -1,0 +1,19 @@
+# kubernetes/robot-controller-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: robot-controller-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: robot-controller
+  template:
+    metadata:
+      labels:
+        app: robot-controller
+    spec:
+      containers:
+      - name: robot-controller
+        image: robot-controller # The name of the Docker image we built
+        imagePullPolicy: Never  # Use local images only

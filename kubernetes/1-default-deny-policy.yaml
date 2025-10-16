@@ -1,0 +1,9 @@
+# kubernetes/1-default-deny-policy.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+spec:
+  podSelector: {} # An empty selector matches all pods in the namespace
+  policyTypes:
+  - Ingress

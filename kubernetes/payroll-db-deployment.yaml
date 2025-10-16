@@ -1,0 +1,31 @@
+# kubernetes/payroll-db-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payroll-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payroll-db
+  template:
+    metadata:
+      labels:
+        app: payroll-db
+    spec:
+      containers:
+      - name: payroll-db
+        image: payroll-db
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payroll-db-service
+spec:
+  selector:
+    app: payroll-db
+  ports:
+    - protocol: TCP
+      port: 5004
+      targetPort: 5004
