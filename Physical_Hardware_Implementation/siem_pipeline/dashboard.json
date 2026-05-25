@@ -1,0 +1,42 @@
+{
+  "title": "ZTFCP SOC Operations",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Zone 1 & 2 Temperature",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [{"expr": "ot_temperature_celsius"}]
+    },
+    {
+      "type": "gauge",
+      "title": "Live AI Anomaly Score (ESP-1)",
+      "gridPos": {"h": 8, "w": 6, "x": 12, "y": 0},
+      "targets": [{"expr": "ot_anomaly_score{node=\"esp32-1\"}"}],
+      "fieldConfig": {
+        "defaults": {
+          "min": 0, "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "orange", "value": 0.4},
+              {"color": "red", "value": 0.85}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Prediction Horizon (Mins to Critical)",
+      "gridPos": {"h": 8, "w": 6, "x": 18, "y": 0},
+      "targets": [{"expr": "ot_prediction_horizon"}]
+    },
+    {
+      "type": "timeseries",
+      "title": "J1010 CPU Load",
+      "gridPos": {"h": 7, "w": 12, "x": 0, "y": 8},
+      "targets": [{"expr": "100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)"}]
+    }
+  ]
+}
