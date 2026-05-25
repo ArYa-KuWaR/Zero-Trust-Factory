@@ -1,0 +1,13 @@
+[Unit]
+Description=ZTFCP Mosquitto to Prometheus Bridge
+After=mosquitto.service network.target
+
+[Service]
+Type=simple
+User=jetson
+ExecStart=/usr/bin/python3 /data/ai/mqtt_exporter.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
