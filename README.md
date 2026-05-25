@@ -1,140 +1,622 @@
 # Zero Trust Factory Control Plane (ZTFCP)
 
-> **Purdue + AI-Powered OT/IT Segmentation**
+> **Purdue-Aligned Zero Trust Architecture for Smart Industrial Environments**
 
-A next-generation cybersecurity architecture for Industry 5.0 — combining Purdue-model zoning, micro-segmentation, certificate-based authentication, and AI-driven behavioral anomaly detection to protect modern factory environments.
+A next-generation cybersecurity framework for Industry 5.0 environments that combines Purdue-model segmentation, Zero Trust identity enforcement, AI-driven anomaly detection, and OT/IT micro-segmentation to secure modern industrial control systems (ICS).
+
+---
 
 ![ZTFCP Network Topology](images/image_0b6385.png)
 
 [![IEC 62443](https://img.shields.io/badge/IEC%2062443-Compliant-blue)](https://www.iec.ch/cyber-security)
 [![Industry 5.0](https://img.shields.io/badge/Industry%205.0-Ready-green)](https://ec.europa.eu/info/research-and-innovation/research-area/industrial-research-and-innovation/industry-50_en)
 [![Zero Trust](https://img.shields.io/badge/Zero%20Trust-Architecture-red)](https://www.nist.gov/publications/zero-trust-architecture)
+[![OT Security](https://img.shields.io/badge/OT-Security-orange)](#)
+[![AI Threat Detection](https://img.shields.io/badge/AI-Anomaly%20Detection-purple)](#)
 
 ---
 
-## 🎯 Executive Summary
+# 📌 Executive Summary
 
-Modern factories are converging IT and OT networks at an unprecedented pace. Legacy Purdue-model environments were designed for isolation — not the hyper-connected, data-driven demands of Industry 5.0. This creates critical attack surfaces: unencrypted device communications, flat OT network topologies, and a lack of behavioral baselining for anomalous activity.
+Modern industrial environments are rapidly converging Operational Technology (OT) and Information Technology (IT) infrastructures. Traditional Purdue-model factories were designed primarily for isolation and deterministic communication — not for highly connected, cloud-integrated, AI-enabled Industry 5.0 ecosystems.
 
-**A single lateral movement event in an OT environment can cascade from a sensor node to a plant-wide operational shutdown.** This project delivers a deployable, hardware-backed solution that enforces Zero Trust identity verification and sub-second AI threat response natively at the edge. It effectively neutralizes unauthorized access, spoofing, and physical anomalies before critical thresholds are breached.
+This convergence introduces major cybersecurity risks:
+
+- Flat OT network architectures
+- Unencrypted industrial communication
+- Weak device authentication
+- Lack of behavioral monitoring
+- Increased lateral movement possibilities
+- Delayed incident response capabilities
+
+A single compromised edge device can potentially propagate attacks across an entire industrial plant, causing operational disruption, safety hazards, or production downtime.
+
+The **Zero Trust Factory Control Plane (ZTFCP)** addresses these risks through a deployable hardware-backed architecture that enforces:
+
+- Strict Purdue-level segmentation
+- Mutual TLS (mTLS) identity verification
+- ACL-based micro-segmentation
+- AI-powered behavioral anomaly detection
+- Autonomous edge-level response mechanisms
+- SOC-ready observability and SIEM integration
+
+The system is specifically designed for:
+
+- Smart factories
+- Industrial IoT (IIoT)
+- Critical infrastructure labs
+- Secure cyber-physical systems
+- Industry 5.0 research environments
 
 ---
 
-## 🏗️ Architecture Overview
+# 🏗️ System Architecture
 
-The physical network is strictly segmented according to the **Purdue Enterprise Reference Architecture**. All OT and IT routing passes through a heavily controlled ICS network configuration using Windows Internet Connection Sharing (ICS) and native network manager controls, ensuring traffic only flows between explicitly authorized subnets.
+The architecture follows the **Purdue Enterprise Reference Architecture (PERA)** and implements strict OT/IT segregation using controlled routing policies and network isolation.
 
-### System Architecture
-*(The hardware and network boundaries defining the factory control plane)*
+All communication between industrial zones is explicitly governed through:
+
+- Controlled subnet routing
+- ICS gateway enforcement
+- Firewall-based traffic filtering
+- Mutual TLS authentication
+- Topic-level broker isolation
+
+---
+
+# 🧠 Architecture Overview
+
+## Physical & Network Architecture
+
+*(Defines the hardware layers, trust boundaries, and Purdue segmentation model)*
 
 ![Architecture Diagram](images/image_0b63a4.jpg)
 
-### Data & Security Flow
-*(The end-to-end pipeline from physical sensors to the SIEM/AI layer)*
+---
+
+## Data & Security Pipeline
+
+*(Illustrates telemetry flow, AI evaluation, anomaly scoring, and autonomous actuation)*
 
 ![Flow Diagram](images/image_0b63c6.jpg)
 
-### Purdue Level Mapping & Hardware
+---
+
+# 🏭 Purdue Level Mapping
 
 | Purdue Level | Zone | Components | Security Controls |
-| :--- | :--- | :--- | :--- |
-| **Level 4** | IT Enterprise | ASUS ROG Laptop (`192.168.137.1` / `10.130.190.53`) | Subnet isolation; Phase 1 software plant simulation; SIEM event ingestion; role-based Grafana SOC access. |
-| **Level 3.5** | DMZ Gateway | Seeed reComputer J1010 (Jetson Nano - `192.168.137.200`) | Uncomplicated Firewall (UFW) enforcement; default-deny policy; secure mTLS termination point. |
-| **Level 3** | Operations | Jetson Nano Core Services | Mosquitto broker (mTLS on 8883); Isolation Forest AI engine; Prometheus metrics collection; Grafana dashboard. |
-| **Level 1–2** | Basic Control | ESP32 Microcontrollers (`10.130.190.x`) | Micro-segmented MQTT topics; cryptographic mTLS identity profile. |
-| **Level 0** | Field/Edge | DHT22 Sensors & SG90 Servo Actuator | Physical environmental monitoring and autonomous safety response actuation. |
+|---|---|---|---|
+| **Level 4** | Enterprise IT | ASUS ROG Laptop (`192.168.137.1` / `10.130.190.53`) | Subnet isolation, SOC visualization, SIEM event ingestion, RBAC-controlled Grafana access |
+| **Level 3.5** | Industrial DMZ | Seeed reComputer J1010 (Jetson Nano - `192.168.137.200`) | UFW firewall enforcement, default-deny policy, secure gateway filtering, mTLS termination |
+| **Level 3** | Operations & Control | Jetson Nano Core Services | Mosquitto MQTT broker, Isolation Forest AI engine, Prometheus metrics collection, Grafana dashboards |
+| **Level 1–2** | Basic Control | ESP32 Edge Controllers (`10.130.190.x`) | Cryptographic device identity, ACL micro-segmentation, secure MQTT topic enforcement |
+| **Level 0** | Field Devices | DHT22 Sensors & SG90 Servo Actuator | Physical telemetry acquisition and autonomous safety actuation |
 
 ---
 
-## 🛡️ Security Features (OT/IT Convergence)
+# 🔐 Core Security Features
 
-### 1. Mutual TLS (mTLS) & Zero Trust Identity
-Every connection inside the factory control plane requires Mutual TLS (mTLS). Both the client (ESP32) and the server (Jetson Nano) must present valid, CA-signed X.509 certificates. Unauthenticated connections, even from within the local network range, are instantly dropped at the socket layer. To ensure resilience in offline, air-gapped environments lacking Network Time Protocol (NTP) access, a custom epoch-time anchoring routine is programmed directly into the microcontroller firmware to prevent false mTLS certificate expiration failures.
+# 1️⃣ Mutual TLS (mTLS) & Zero Trust Identity
 
-### 2. ACL Micro-Segmentation
-Mosquitto Access Control Lists (ACLs) prevent unauthorized lateral movement inside the message broker layer. Sensor nodes (`esp32-1`, `esp32-2`) are cryptographically restricted to publish strictly to their designated telemetry topics and are explicitly denied privileges to write or subscribe to actuator command topics, effectively isolating compromised edge units.
+Every device and service inside the control plane is authenticated using **Mutual TLS (mTLS)**.
 
-### 3. Predictive AI Security Layer
-An unsupervised **Isolation Forest** machine learning model runs natively on the Jetson Nano's 128-core Maxwell GPU.
-* **Behavioral Baselining:** The system continuously evaluates incoming environmental telemetry (`t1`, `h1`, `t2`, `h2`) against a mathematical baseline established during normal operation.
-* **Predictive Horizon:** A sliding window tracker calculates the real-time Rate of Change (`dT/dt`) of temperature and humidity parameters to forecast critical boundary breaches *before* they occur.
-* **Autonomous Response:** If a high or critical anomaly severity index is computed (Score $\ge$ 0.85), the detector bypasses human intervention and autonomously issues an immediate `OPEN` instruction to the physical SG90 safety servo actuator over the mTLS-secured command channel to dump pressure/heat in under 1 second.
+Both the client and server must present valid CA-signed X.509 certificates before communication is permitted.
 
-### 4. SOC-Ready Visibility & MITRE ICS Mapping
-All anomalous events are automatically enriched with **MITRE ATT&CK for ICS** framework technique identifiers (such as *T0814 Denial of Control* and *T0856 Spoof Reporting Message*). Security event telemetry is written to persistent local alert logs (`/data/siem/events/alerts.json`) formatted in standard CEF/Syslog parameters for direct downstream forwarding to enterprise SIEM tools.
+## Key Capabilities
+
+- Certificate-based device authentication
+- Elimination of implicit network trust
+- Socket-layer rejection of unauthorized devices
+- Secure encrypted telemetry channels
+- Offline-safe certificate handling for air-gapped environments
+
+## Offline Time Anchoring
+
+Industrial environments frequently operate without reliable NTP access.
+
+To prevent certificate validation failures caused by incorrect device clocks, the ESP32 firmware implements a custom epoch-time anchoring mechanism that:
+
+- Establishes trusted baseline time
+- Prevents false certificate expiration states
+- Enables reliable offline authentication
 
 ---
 
-## 🚀 Live SOC Stack (Observability)
+# 2️⃣ ACL-Based Micro-Segmentation
 
-* **Message Bus:** Eclipse Mosquitto 2.0.18 (Compiled from source for aarch64 on JetPack 4.6.1).
-* **Metrics Aggregation:** Prometheus 2.45.0 scraping a custom Python MQTT exporter interface on port `8000` and hardware infrastructure metrics via `node_exporter` on port `9100`.
-* **HMI Dashboard:** Grafana 12.4.1 streaming live anomaly scores, rate-of-change trendlines, prediction horizons, and gateway system performance metrics.
+The MQTT broker enforces strict topic-level segmentation using Mosquitto Access Control Lists (ACLs).
+
+Each ESP32 device is cryptographically restricted to only its designated telemetry paths.
+
+## Security Benefits
+
+- Prevents lateral movement
+- Stops unauthorized actuator access
+- Isolates compromised edge nodes
+- Enforces least-privilege communication
+
+### Example Restrictions
+
+| Device | Allowed Actions |
+|---|---|
+| `esp32-1` | Publish only to sensor telemetry topics |
+| `esp32-2` | Publish only to assigned telemetry streams |
+| Edge Sensors | Denied access to actuator command channels |
+| Servo Controller | Accepts commands only from authenticated AI engine |
 
 ---
 
-## 📂 Repository Structure
+# 3️⃣ AI-Powered Predictive Threat Detection
+
+The platform deploys an unsupervised **Isolation Forest** anomaly detection model running directly on the Jetson Nano edge gateway.
+
+The AI layer continuously evaluates environmental telemetry streams:
+
+- Temperature (`t1`, `t2`)
+- Humidity (`h1`, `h2`)
+- Temporal behavioral patterns
+- Rate-of-change dynamics
+
+---
+
+## Behavioral Baselining
+
+The system establishes mathematical baselines representing normal industrial operating conditions.
+
+Incoming telemetry is continuously compared against this baseline to detect:
+
+- Sensor spoofing
+- Environmental anomalies
+- Unexpected telemetry drift
+- Rapid thermal escalation
+- Manipulated sensor behavior
+
+---
+
+## Predictive Horizon Analysis
+
+A sliding window forecasting engine computes real-time:
+
+- Temperature velocity (`dT/dt`)
+- Humidity velocity
+- Trend acceleration
+- Critical threshold prediction horizons
+
+This allows the system to predict dangerous conditions *before* operational limits are breached.
+
+---
+
+## Autonomous Safety Response
+
+If anomaly severity exceeds the configured threshold:
+
+```text
+Anomaly Score ≥ 0.85
+```
+
+The AI engine autonomously:
+
+1. Bypasses manual intervention
+2. Publishes a secure emergency command
+3. Triggers the SG90 servo actuator
+4. Executes physical mitigation actions
+5. Responds in under 1 second
+
+This closed-loop response mechanism enables real-time cyber-physical protection directly at the edge.
+
+---
+
+# 4️⃣ SOC Visibility & SIEM Integration
+
+The platform includes a fully observable industrial SOC monitoring pipeline.
+
+All anomalous activity is:
+
+- Logged persistently
+- Enriched with MITRE ATT&CK for ICS mappings
+- Exported in SIEM-compatible formats
+- Streamed to Grafana dashboards
+
+---
+
+## MITRE ATT&CK for ICS Mapping
+
+| Technique ID | Description |
+|---|---|
+| `T0814` | Denial of Control |
+| `T0856` | Spoof Reporting Message |
+| `T0803` | Block Command Message |
+| `T0827` | Alarm Suppression |
+
+---
+
+## SIEM Event Storage
+
+Security events are written to:
+
+```bash
+/data/siem/events/alerts.json
+```
+
+Compatible output formats include:
+
+- Syslog
+- CEF
+- JSON event pipelines
+
+Designed for downstream integration with:
+
+- Wazuh
+- Splunk
+- Elastic SIEM
+- QRadar
+- Microsoft Sentinel
+
+---
+
+# 📊 Observability Stack
+
+| Component | Purpose |
+|---|---|
+| **Eclipse Mosquitto 2.0.18** | Secure MQTT message broker |
+| **Prometheus 2.45.0** | Metrics aggregation and time-series collection |
+| **Grafana 12.4.1** | SOC visualization and dashboarding |
+| **Node Exporter** | Infrastructure metrics |
+| **Python MQTT Exporter** | MQTT telemetry metric exposure |
+| **Jetson Nano AI Engine** | Real-time anomaly detection |
+
+---
+
+# 🧰 Technology Stack
+
+## Hardware
+
+- Seeed reComputer J1010 (Jetson Nano)
+- ESP32 Development Boards
+- DHT22 Sensors
+- SG90 Servo Motor
+- ASUS ROG Laptop
+
+---
+
+## Software & Frameworks
+
+- Ubuntu Linux
+- Mosquitto MQTT Broker
+- Python
+- Prometheus
+- Grafana
+- OpenSSL
+- UFW Firewall
+- Docker/Kubernetes (Simulation Layer)
+- Calico CNI Policies
+
+---
+
+## AI & Security
+
+- Isolation Forest
+- Behavioral Anomaly Detection
+- MITRE ATT&CK for ICS
+- X.509 PKI Infrastructure
+- mTLS Authentication
+- ACL Segmentation
+
+---
+
+# 📂 Repository Structure
 
 ```text
 Zero-Trust-Factory/
 │
 ├── Physical_Hardware_Implementation/
-│   ├── edge_nodes/               # ESP32 C++ firmware files (DHT22 Sensors & SG90 Servo)
-│   ├── ai_security_layer/        # Isolation Forest detector, training scripts, & baseline data
-│   ├── siem_pipeline/            # Prometheus MQTT exporter, node_exporter config, & Grafana JSON
-│   ├── mosquitto_config/         # Zero Trust ACL security files and mTLS configurations
-│   └── scripts/                  # Shell scripts for automated startup & health checks
+│   │
+│   ├── edge_nodes/
+│   │   ├── esp32_sensor_nodes/
+│   │   └── servo_controller/
+│   │
+│   ├── ai_security_layer/
+│   │   ├── isolation_forest/
+│   │   ├── training_scripts/
+│   │   └── baseline_datasets/
+│   │
+│   ├── siem_pipeline/
+│   │   ├── prometheus_exporter/
+│   │   ├── grafana_dashboards/
+│   │   └── alert_pipeline/
+│   │
+│   ├── mosquitto_config/
+│   │   ├── acl/
+│   │   ├── certificates/
+│   │   └── broker_configs/
+│   │
+│   └── scripts/
+│       ├── startup/
+│       ├── health_checks/
+│       └── automation/
 │
-├── Zero-Trust-Factory_Simulation/# Phase 1: Kubernetes software plant simulation (Calico CNI policies)
+├── Zero-Trust-Factory_Simulation/
+│   ├── kubernetes_lab/
+│   ├── calico_policies/
+│   └── simulated_ot_environment/
 │
-├── References/                   # Threat modeling, SPPU Project Reports, and IEC 62443 docs
+├── References/
+│   ├── IEC62443/
+│   ├── Threat_Models/
+│   └── Research_Papers/
 │
-├── images/                       # Topologies, system architecture, and data flow diagrams
+├── images/
 │
-├── LICENSE                       # Open-source distribution license
-└── README.md                     # Master Documentation (This File)
-🚦 Getting Started
-1. Start the Background Services
-Execute the consolidated startup script on the Jetson Nano to spin up the broker, SIEM components, and the AI evaluation engine:
+├── LICENSE
+│
+└── README.md
+```
 
-Bash
+---
+
+# 🚀 Getting Started
+
+# 1️⃣ Start Core Services
+
+Run the startup orchestration script on the Jetson Nano:
+
+```bash
 ./Physical_Hardware_Implementation/scripts/start_ztfcp.sh
-2. Verify Infrastructure Health
-The startup routine runs an automated port and socket readiness check across all critical interfaces:
+```
 
-1883 - Localhost Wiretap (Unencrypted internal connection)
+This initializes:
 
-8883 - MQTTS (mTLS Enforced perimeter)
+- Mosquitto Broker
+- Prometheus
+- Grafana
+- MQTT Exporter
+- AI Detection Engine
+- SIEM Pipeline
 
-3000 - Grafana SOC HMI Dashboard
+---
 
-9090 - Prometheus TSDB Engine
+# 2️⃣ Verify Infrastructure Health
 
-8000 - Python MQTT Exporter Metric Endpoint
+The startup script automatically validates all critical interfaces.
 
-3. Access the Monitoring Interface
-Open a secure browser instance on an authorized administrator machine within the network and connect to the Grafana panel at http://192.168.137.200:3000 using the configured access credentials (admin / admin123).
+| Port | Service |
+|---|---|
+| `1883` | Internal MQTT Wiretap |
+| `8883` | Secure MQTTS (mTLS Enforced) |
+| `3000` | Grafana SOC Dashboard |
+| `8000` | Python MQTT Exporter |
+| `9090` | Prometheus TSDB |
+| `9100` | Node Exporter |
 
-🗺️ Roadmap & Future Scope
-Aligned with our long-term research goals and the cybersecurity alignment strategies defined by IEC 62443 industrial guidelines, subsequent implementation phases include:
+---
 
-Expand Physical Lab Coverage: Introduce additional edge controller configurations and integrate brownfield PLC instrumentation over legacy serial connections.
+# 3️⃣ Access the SOC Dashboard
 
-Harden AI Processing Blocks: Train the unsupervised Isolation Forest models against advanced temporal sequences using deep learning LSTM Autoencoders exposed to explicit ICS attack vectors, including replay and targeted telemetry spoofing scenarios.
+Open Grafana from an authorized administrative workstation:
 
-Production Pilot Deployment: Transition from an isolated testing network to a live production environment through an integrated Security Operations Center (SOC) pilot loop leveraging active Wazuh SIEM threat hunting utilities.
+```text
+http://192.168.137.200:3000
+```
 
-Compliance Audit Readiness: Complete formal technical evaluation profiles to certify the control plane architecture against international IEC 62443 Security Level 2 (SL-2) requirements.
+### Default Credentials
 
-🏆 Project Team
-Developed as a Final Year Engineering Capstone Project under the academic guidance of Prof. Amol Suryawanshi.
+```text
+Username: admin
+Password: admin123
+```
 
-Shambhavi Raj (22311465)
+> ⚠️ Change default credentials before production deployment.
 
-Shardul Bangale (22311187)
+---
 
-Shravya Bhandary (22310645)
+# 🔬 Research & Academic Relevance
 
-Arya Kuwar (22311452)
+This project aligns with:
 
-BRACT's Vishwakarma Institute of Information Technology (VIIT Pune) — Department of Computer Science Engineering with Specialization in IoT, Cybersecurity, and Blockchain Technology, AY 2025-26.
+- IEC 62443 Industrial Security Standards
+- NIST Zero Trust Architecture
+- Industry 5.0 Cyber-Physical Security
+- Smart Manufacturing Security Models
+- Industrial SOC Modernization
+- Secure IIoT Infrastructure Design
+
+The architecture demonstrates practical implementation of:
+
+- OT/IT convergence security
+- Real-time edge AI security
+- Autonomous industrial defense systems
+- Secure industrial telemetry pipelines
+
+---
+
+# 🛣️ Future Scope
+
+## Expand Physical Infrastructure
+
+- Integrate PLCs and RTUs
+- Add Modbus and OPC-UA support
+- Introduce brownfield industrial devices
+- Expand sensor diversity
+
+---
+
+## Advanced AI Security Models
+
+Future AI enhancements include:
+
+- LSTM Autoencoders
+- Time-series behavioral learning
+- Replay attack detection
+- Telemetry spoofing analysis
+- Federated industrial learning pipelines
+
+---
+
+## Production SOC Pilot
+
+Planned deployment goals include:
+
+- Wazuh SIEM integration
+- Threat hunting workflows
+- Incident correlation pipelines
+- Multi-factory monitoring support
+
+---
+
+## Compliance Certification
+
+Future compliance objectives:
+
+- IEC 62443 SL-2 alignment
+- Formal risk assessment documentation
+- Security audit readiness
+- Industrial penetration testing validation
+
+---
+
+# 📚 References
+
+## Industrial Security Standards & Frameworks
+
+1. **IEC 62443 — Industrial Communication Networks & System Security**  
+   https://www.iec.ch/cyber-security
+
+2. **NIST SP 800-207 — Zero Trust Architecture**  
+   https://csrc.nist.gov/publications/detail/sp/800-207/final
+
+3. **MITRE ATT&CK for ICS Framework**  
+   https://attack.mitre.org/matrices/ics/
+
+4. **Purdue Enterprise Reference Architecture (PERA)**  
+   https://www.cisa.gov/resources-tools/resources/purdue-model-control-hierarchy
+
+---
+
+## Industry 5.0 & Smart Manufacturing
+
+5. **European Commission — Industry 5.0**  
+   https://ec.europa.eu/info/research-and-innovation/research-area/industrial-research-and-innovation/industry-50_en
+
+6. **NIST Cybersecurity Framework (CSF)**  
+   https://www.nist.gov/cyberframework
+
+---
+
+## Technologies & Platforms Used
+
+7. **Eclipse Mosquitto MQTT Broker**  
+   https://mosquitto.org/
+
+8. **Prometheus Monitoring System**  
+   https://prometheus.io/
+
+9. **Grafana Observability Platform**  
+   https://grafana.com/
+
+10. **OpenSSL Cryptographic Toolkit**  
+    https://www.openssl.org/
+
+11. **Calico Network Policies**  
+    https://www.tigera.io/project-calico/
+
+---
+
+## AI & Machine Learning References
+
+12. **Isolation Forest Paper — Liu et al.**  
+    https://ieeexplore.ieee.org/document/4781136
+
+13. **Scikit-learn Isolation Forest Documentation**  
+    https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
+
+---
+
+## Hardware Documentation
+
+14. **ESP32 Documentation — Espressif Systems**  
+    https://docs.espressif.com/projects/esp-idf/en/latest/esp32/
+
+15. **NVIDIA Jetson Nano Developer Kit**  
+    https://developer.nvidia.com/embedded/jetson-nano-developer-kit
+
+16. **DHT22 Sensor Datasheet**  
+    https://cdn.sparkfun.com/assets/f/7/d/9/c/DHT22.pdf
+
+17. **SG90 Servo Motor Datasheet**  
+    https://components101.com/motors/servo-motor-basics-pinout-datasheet
+
+---
+
+## Research & Academic Inspiration
+
+18. Research papers and industrial whitepapers related to:
+   - OT/IT Convergence Security
+   - Industrial Zero Trust Architecture
+   - AI-based ICS Threat Detection
+   - Behavioral Anomaly Detection in IIoT
+   - Smart Factory Security Models
+
+---
+
+# 🏆 Project Team
+
+Developed as a Final Year Engineering Capstone Project under the academic guidance of **Prof. Amol Suryawanshi**.
+
+## Team Members
+
+- **Shambhavi Raj** — 22311465
+- **Shardul Bangale** — 22311187
+- **Shravya Bhandary** — 22310645
+- **Arya Kuwar** — 22311452
+
+---
+
+## Institution
+
+**BRACT's Vishwakarma Institute of Information Technology (VIIT Pune)**  
+Department of Computer Science Engineering  
+Specialization in IoT, Cybersecurity, and Blockchain Technology  
+Academic Year 2025–26
+
+---
+
+# 📜 License
+
+This project is released under the terms defined in the `LICENSE` file.
+
+---
+
+# ⭐ Acknowledgements
+
+Special thanks to:
+
+- VIIT Pune Faculty & Research Mentors
+- Open-source security communities
+- IEC 62443 industrial security references
+- MITRE ATT&CK for ICS contributors
+- Eclipse Mosquitto developers
+- Grafana & Prometheus maintainers
+
+---
+
+# 📬 Contact
+
+**Shardul Bangale**  
+📧 shardulbangale@gmail.com  
+
+For research collaborations, project discussions, or industrial cybersecurity initiatives, feel free to reach out.
+
+---
+
+# 🔥 Final Vision
+
+The **Zero Trust Factory Control Plane (ZTFCP)** represents a step toward resilient, autonomous, and security-first industrial environments where cyber defense is embedded directly into the operational fabric of the factory itself.
+
+By combining:
+
+- Zero Trust principles
+- AI-driven edge intelligence
+- Purdue-aligned segmentation
+- Real-time autonomous response
+
+the architecture demonstrates how future Industry 5.0 ecosystems can remain both highly connected and operationally secure.
