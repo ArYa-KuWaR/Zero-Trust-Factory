@@ -564,10 +564,12 @@ Developed as a Final Year Engineering Capstone Project under the academic guidan
 
 ## Team Members
 
-- **Shambhavi Raj** — 22311465
+
 - **Shardul Bangale** — 22311187
-- **Shravya Bhandary** — 22310645
 - **Arya Kuwar** — 22311452
+- **Shambhavi Raj** — 22311465
+- **Shravya Bhandary** — 22310645
+  
 
 ---
 
@@ -603,6 +605,9 @@ Special thanks to:
 
 **Shardul Bangale**  
 📧 shardulbangale@gmail.com  
+
+**Arya Kuwar**
+📧 aryakuwar28@gmail.com 
 
 For research collaborations, project discussions, or industrial cybersecurity initiatives, feel free to reach out.
 
