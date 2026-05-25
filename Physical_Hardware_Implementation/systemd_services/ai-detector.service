@@ -1,0 +1,13 @@
+[Unit]
+Description=ZTFCP Edge AI Anomaly Detector
+After=mosquitto.service network.target
+
+[Service]
+Type=simple
+User=jetson
+ExecStart=/usr/bin/python3 /data/ai_layer/detector.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
