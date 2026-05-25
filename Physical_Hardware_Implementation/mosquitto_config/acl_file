@@ -1,0 +1,15 @@
+# J1010 Admin (Can read/write everything)
+user ztfcp-dmz-gw
+topic readwrite #
+
+# ESP32-1 (Can only publish its own telemetry)
+user esp32-client-1
+topic write ot/level1/sensor/esp32-1/#
+
+# ESP32-2 (Can only publish its own telemetry)
+user esp32-client-2
+topic write ot/level1/sensor/esp32-2/#
+
+# ESP32-3 (Can only read the servo command)
+user esp32-client-3
+topic read ot/level1/actuator/esp32-3/servo
