@@ -573,14 +573,6 @@ Developed as a Final Year Engineering Capstone Project under the academic guidan
 
 ---
 
-## Institution
-
-**BRACT's Vishwakarma Institute of Information Technology (VIIT Pune)**  
-Department of Computer Science Engineering  
-Specialization in IoT, Cybersecurity, and Blockchain Technology  
-Academic Year 2025–26
-
----
 
 # 📜 License
 
@@ -601,17 +593,7 @@ Special thanks to:
 
 ---
 
-# 📬 Contact
 
-**Shardul Bangale**  
-📧 shardulbangale@gmail.com  
-
-**Arya Kuwar**
-📧 aryakuwar28@gmail.com 
-
-For research collaborations, project discussions, or industrial cybersecurity initiatives, feel free to reach out.
-
----
 
 # 🔥 Final Vision
 
