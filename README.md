@@ -584,7 +584,6 @@ This project is released under the terms defined in the `LICENSE` file.
 
 Special thanks to:
 
-- VIIT Pune Faculty & Research Mentors
 - Open-source security communities
 - IEC 62443 industrial security references
 - MITRE ATT&CK for ICS contributors
